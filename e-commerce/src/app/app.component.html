@@ -1,0 +1,49 @@
+<main>
+  <div class="Container">
+    <div class="Header">
+      <div class="Logo" (click)="showCart = false">
+        <img src="https://icons.iconarchive.com/icons/graphicloads/100-flat/128/shopping-icon.png" alt="Logo">
+      </div>
+      <div class="Cart" (click)="showCart = true">
+        <span>{{cartAmount}}</span>
+        <img src="https://icons.iconarchive.com/icons/iconsmind/outline/128/Full-Cart-icon.png" alt="Cart">
+      </div>
+    </div>
+    <div class="Shopping-Cart" *ngIf="showCart == true">
+      <div class="Cart-Content">
+        <div class="Cart-Itens">
+          <Cart-Item *ngFor="let item of cartProducts" [id]='item.id' [title]='item.title' [price]='item.price'
+            [updatedPrice]='item.updatedPrice' [image]='item.image' [itemAmount]='item.itemAmount'
+            (More)="updateCartOnAdd(item.id, item.price)" (Less)="updateCartOnRemove(item.id, item.price)"
+            (Remove)="removeItemFromCart(item.id)"></Cart-Item>
+        </div>
+        <div class="Total-Price">
+          <span *ngIf="cartAmount == 0" style="color: black">Your cart is empty</span>
+          <span *ngIf="cartAmount > 0">Total Price: {{cartPrice.toLocaleString()}}$</span>
+        </div>
+      </div>
+    </div>
+    <div class="Shopping-Page" *ngIf="showCart == false">
+      <div class="Categories">
+        <ul>
+          <li (click)="setCategory('womens clothing')">Women's Clothing</li>
+          <li (click)="setCategory('mens clothing')">Men's Clothing</li>
+          <li (click)="setCategory('electronics')">Electronics</li>
+          <li (click)="setCategory('jewelery')">Jeweleries</li>
+          <li (click)="setCategory('all')">All</li>
+        </ul>
+      </div>
+      <div class="Content">
+        <ul>
+          <li *ngFor="let item of filteredProducts">
+            <Item-Card [id]='item.id' [description]='item.description' [title]='item.title' [price]='item.price'
+              [category]='item.category' [image]='item.image'
+              (addToCart)="onAddToCart(item.id, item.title, item.price, item.image, item.description, item.category)"
+              (removeFromCart)="onRemoveFromCart(item.id, item.title, item.price, item.image, item.description, item.category)" (modal)="onModal()" (disableModal)="onModalOff()">
+            </Item-Card>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</main>
